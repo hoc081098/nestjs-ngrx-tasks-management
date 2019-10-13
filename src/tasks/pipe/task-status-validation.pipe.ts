@@ -12,5 +12,6 @@ export class TaskStatusValidationPipe implements PipeTransform {
     if (!Object.values(TaskStatus as any).includes(upperCase)) {
       throw new BadRequestException(`${value} is an invalid task status`);
     }
+    return upperCase;
   }
 }
