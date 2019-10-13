@@ -26,8 +26,11 @@ export class TasksService {
     throw new NotFoundException(`Task with ID "${id}" not found`);
   }
 
-  deleteTaskById(id: string) {
-    throw new NotImplementedException();
+  async deleteTaskById(id: number) {
+    const result = await this.taskRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
   }
 
   updateTaskStatus(id: string, status: TaskStatus): Task {
