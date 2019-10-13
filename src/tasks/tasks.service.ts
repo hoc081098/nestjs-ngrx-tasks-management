@@ -9,11 +9,6 @@ import { Task } from './task.entity';
 export class TasksService {
 
   constructor(private readonly taskRepository: TaskRepository) {}
-
-  getAllTasks(): Task[] {
-    throw new NotImplementedException();
-  }
-
   createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.taskRepository.createTask(createTaskDto);
   }
@@ -40,7 +35,7 @@ export class TasksService {
     return task;
   }
 
-  getTaskWithFilters(filterDto: GetTaskFilterDto): Task[] {
-    throw new NotImplementedException();
+  getTasks(filterDto: GetTaskFilterDto): Promise<Task[]> {
+    return this.taskRepository.getTasks(filterDto);
   }
 }
