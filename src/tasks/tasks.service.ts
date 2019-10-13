@@ -3,10 +3,13 @@ import { Task, TaskStatus } from './task.model';
 import * as uuidV1 from 'uuid/v1';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
+import { TaskRepository } from './task.repository';
 
 @Injectable()
 export class TasksService {
   private tasks: Task[] = [];
+
+  constructor(private readonly taskRepository: TaskRepository) {}
 
   getAllTasks(): Task[] {
     return this.tasks;
