@@ -14,8 +14,8 @@ export class TasksService {
     throw new NotImplementedException();
   }
 
-  createTask(createTaskDto: CreateTaskDto): Task {
-    throw new NotImplementedException();
+  createTask(createTaskDto: CreateTaskDto) {
+    return this.taskRepository.createTask(createTaskDto);
   }
 
   async getTaskById(id: number) {
