@@ -14,11 +14,11 @@ export class TasksService {
     throw new NotImplementedException();
   }
 
-  createTask(createTaskDto: CreateTaskDto) {
+  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     return this.taskRepository.createTask(createTaskDto);
   }
 
-  async getTaskById(id: number) {
+  async getTaskById(id: number): Promise<Task> {
     const task = await this.taskRepository.findOne(id);
     if (task) {
       return task;
@@ -26,15 +26,18 @@ export class TasksService {
     throw new NotFoundException(`Task with ID "${id}" not found`);
   }
 
-  async deleteTaskById(id: number) {
+  async deleteTaskById(id: number): Promise<void> {
     const result = await this.taskRepository.delete(id);
     if (result.affected === 0) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
     }
   }
 
-  updateTaskStatus(id: string, status: TaskStatus): Task {
-    throw new NotImplementedException();
+  async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    await task.save();
+    return task;
   }
 
   getTaskWithFilters(filterDto: GetTaskFilterDto): Task[] {
