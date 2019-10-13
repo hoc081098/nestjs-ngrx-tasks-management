@@ -1,4 +1,4 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { TaskStatus } from './task-status.enum';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
@@ -18,8 +18,12 @@ export class TasksService {
     throw new NotImplementedException();
   }
 
-  getTaskById(id: string): Task {
-    throw new NotImplementedException();
+  async getTaskById(id: number) {
+    const task = await this.taskRepository.findOne(id);
+    if (task) {
+      return task;
+    }
+    throw new NotFoundException(`Task with ID "${id}" not found`);
   }
 
   deleteTaskById(id: string) {
