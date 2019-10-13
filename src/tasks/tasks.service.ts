@@ -35,6 +35,7 @@ export class TasksService {
   }
 
   deleteTaskById(id: string) {
+    this.getTaskById(id);
     this.tasks = this.tasks.filter(t => t.id !== id);
   }
 
