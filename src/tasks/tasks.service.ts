@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, NotImplementedException } from '@nestjs/common';
 import { TaskStatus } from './task-status.enum';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
@@ -15,8 +15,8 @@ export class TasksService {
     return this.taskRepository.createTask(createTaskDto, user);
   }
 
-  async getTaskById(id: number): Promise<Task> {
-    const task = await this.taskRepository.findOne(id);
+  async getTaskById(id: number, user: User): Promise<Task> {
+    const task = await this.taskRepository.findOne({ where: { id, userId: user.id } });
     if (task) {
       return task;
     }
@@ -31,10 +31,11 @@ export class TasksService {
   }
 
   async updateTaskStatus(id: number, status: TaskStatus): Promise<Task> {
-    const task = await this.getTaskById(id);
-    task.status = status;
-    await task.save();
-    return task;
+    // const task = await this.getTaskById(id);
+    // task.status = status;
+    // await task.save();
+    // return task;
+    throw new NotImplementedException();
   }
 
   getTasks(filterDto: GetTaskFilterDto, user: User): Promise<Task[]> {
