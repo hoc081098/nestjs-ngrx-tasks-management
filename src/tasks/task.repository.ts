@@ -1,12 +1,15 @@
+import { Logger } from '@nestjs/common';
 import { Brackets, EntityRepository, Repository } from 'typeorm';
-import { Task } from './task.entity';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { TaskStatus } from './task-status.enum';
-import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { User } from '../auth/user.entity';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTaskFilterDto } from './dto/get-task-filter.dto';
+import { TaskStatus } from './task-status.enum';
+import { Task } from './task.entity';
 
 @EntityRepository(Task)
 export class TaskRepository extends Repository<Task> {
+  private readonly logger = new Logger('TaskRepository');
+
   async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const { title, description } = createTaskDto;
 
@@ -15,13 +18,18 @@ export class TaskRepository extends Repository<Task> {
     task.description = description;
     task.status = TaskStatus.OPEN;
     task.user = user;
-    await task.save();
+    try {
+      await task.save();
+    } catch (e) {
+      this.logger.error(`Error createTask: createTaskDto=${JSON.stringify(createTaskDto)}, username=${user.username}`, e.stack);
+      throw e;
+    }
 
     delete task.user;
     return task;
   }
 
-  getTasks(filterDto: GetTaskFilterDto, user: User): Promise<Task[]> {
+  async getTasks(filterDto: GetTaskFilterDto, user: User): Promise<Task[]> {
     const { search, status } = filterDto;
     const queryBuilder = this.createQueryBuilder('t');
 
@@ -40,6 +48,11 @@ export class TaskRepository extends Repository<Task> {
       );
     }
 
-    return queryBuilder.getMany();
+    try {
+      return await queryBuilder.getMany();
+    } catch (e) {
+      this.logger.error(`Error getTasks: filterDto=${JSON.stringify(filterDto)}, username=${user.username}`, e.stack);
+      throw e;
+    }
   }
 }
