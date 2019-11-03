@@ -1,0 +1,10 @@
+server:
+  port: 3000
+
+db:
+  type: 'mysql'
+  port: 3306
+  database: 'task_management'
+
+jwt:
+  expiresIn: '1h'
