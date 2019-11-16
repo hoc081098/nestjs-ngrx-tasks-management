@@ -3,4 +3,4 @@ export interface AuthDto {
   password: string;
 }
 
-export type AuthType = 'login' | 'register';
+export type AuthType = 'sign_in' | 'sign_up';
