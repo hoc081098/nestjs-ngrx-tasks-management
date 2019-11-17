@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../model/user';
 import { tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,10 @@ import { tap } from 'rxjs/operators';
 export class AuthService {
   static BASE_URL = 'http://localhost:3000/auth/';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private jwtHelperService: JwtHelperService,
+  ) {}
 
   auth(authDto: AuthDto, authType: AuthType) {
     return this.httpClient
@@ -35,5 +39,13 @@ export class AuthService {
 
   removeToken() {
     return localStorage.removeItem('token');
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return false;
+    }
+    return !this.jwtHelperService.isTokenExpired(token);
   }
 }

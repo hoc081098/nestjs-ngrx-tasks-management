@@ -11,6 +11,7 @@ import { StoreModule } from './store/store.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ErrorInterceptor } from './services/error.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ErrorInterceptor } from './services/error.interceptor';
     TasksModule,
     StoreModule,
     HttpClientModule,
+    JwtModule.forRoot({}),
   ],
   providers: [
     {
