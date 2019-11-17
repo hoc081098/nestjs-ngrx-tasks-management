@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/store.module';
+import { LoginUser } from '../store/auth';
 
 @Component({
   selector: 'app-login-register',
@@ -6,10 +9,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-register.component.scss']
 })
 export class LoginRegisterComponent implements OnInit {
-
-  constructor() { }
+  constructor(
+    private store: Store<AppState>
+  ) { }
 
   ngOnInit() {
+  }
+
+  onLogin() {
+    this.store.dispatch(new LoginUser({ username: 'Petrus', password: '123456@a' }));
   }
 
 }

@@ -10,12 +10,12 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class AuthService {
-  static BASE_URL = 'http://localhost:3000/auth/';
+  private static readonly BASE_URL = 'http://localhost:3000/auth/';
+  private readonly jwtHelperService = new JwtHelperService();
 
   constructor(
     private httpClient: HttpClient,
-    private jwtHelperService: JwtHelperService,
-  ) {}
+  ) { }
 
   auth(authDto: AuthDto, authType: AuthType) {
     return this.httpClient

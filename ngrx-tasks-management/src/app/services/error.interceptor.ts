@@ -20,10 +20,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private async handleError(error: any): Promise<HttpEvent<any>> {
-    console.log('ErrorInterceptor, error: ', error);
+    console.log('[ErrorInterceptor] error: ', error);
 
     if (error instanceof HttpErrorResponse) {
-      console.log('ErrorInterceptor, HttpErrorResponse: status=', error.status, ', message=', error.message);
+      console.log('[ErrorInterceptor] status=', error.status, ', message=', error.message);
 
       if (error.status === 401) {
         this.injector.get(AuthService).removeToken();

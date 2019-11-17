@@ -19,6 +19,26 @@ export const reducer = (state: AuthState = initialState, action: Actions): AuthS
       return state;
     case ActionTypes.LOGIN_USER:
       return state;
+    case ActionTypes.LOGIN_USER_START:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+      };
+    case ActionTypes.LOGIN_USER_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+        user: null,
+      };
+    case ActionTypes.LOGIN_USER_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        user: action.payload,
+      };
     case ActionTypes.LOGOUT:
       return state;
     case ActionTypes.CHECK_AUTH:

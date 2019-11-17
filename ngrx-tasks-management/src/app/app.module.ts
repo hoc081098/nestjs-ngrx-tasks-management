@@ -26,7 +26,6 @@ import { JwtModule } from '@auth0/angular-jwt';
     TasksModule,
     StoreModule,
     HttpClientModule,
-    JwtModule.forRoot({}),
   ],
   providers: [
     {

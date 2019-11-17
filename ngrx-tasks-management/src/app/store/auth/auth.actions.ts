@@ -4,6 +4,9 @@ import { User } from '../../model/user';
 
 export enum ActionTypes {
   LOGIN_USER = '[Auth] LOGIN_USER',
+  LOGIN_USER_START = '[Auth] LOGIN_USER_START',
+  LOGIN_USER_SUCCESS = '[Auth] LOGIN_USER_SUCCESS',
+  LOGIN_USER_ERROR = '[Auth] LOGIN_USER_ERROR',
 
   REGISTER_USER = '[Auth] REGISTER_USER',
 
@@ -19,6 +22,22 @@ export class LoginUser implements Action {
   readonly type = ActionTypes.LOGIN_USER;
 
   constructor(public readonly payload: AuthDto) {}
+}
+
+export class LoginUserStart implements Action {
+  readonly type = ActionTypes.LOGIN_USER_START;
+}
+
+export class LoginUserSuccess implements Action {
+  readonly type = ActionTypes.LOGIN_USER_SUCCESS;
+
+  constructor(public payload: User) {}
+}
+
+export class LoginUserError implements Action {
+  readonly type = ActionTypes.LOGIN_USER_ERROR;
+
+  constructor(public payload: any) {}
 }
 
 export class RegisterUser implements Action {
@@ -53,6 +72,9 @@ export class CheckAuthError implements Action {
 
 export type Actions =
   LoginUser
+  | LoginUserStart
+  | LoginUserSuccess
+  | LoginUserError
   | RegisterUser
   | Logout
   | CheckAuth
