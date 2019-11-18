@@ -1,9 +1,9 @@
-import {Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuards} from '@nestjs/common';
-import {AuthCredentialDto} from './dto/auth-credential.dto';
-import {AuthService} from './auth.service';
-import {AuthGuard} from '@nestjs/passport';
-import {GetUser} from './get-user.decorator';
-import {User} from './user.entity';
+import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, UseGuards } from '@nestjs/common';
+import { AuthCredentialDto } from './dto/auth-credential.dto';
+import { AuthService } from './auth.service';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -26,7 +26,7 @@ export class AuthController {
   @UseGuards(AuthGuard())
   @Get()
   checkAuth(@GetUser() user: User) {
-    this.logger.debug(`checkAuth: ${user}`);
-    return {username: user.username};
+    this.logger.debug(`checkAuth: user=${JSON.stringify(user)}`);
+    return { username: user.username };
   }
 }

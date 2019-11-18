@@ -11,6 +11,8 @@ export enum ActionTypes {
   REGISTER_USER = '[Auth] REGISTER_USER',
 
   LOGOUT = '[Auth] LOGOUT',
+  LOGOUT_SUCCESS = '[Auth] LOGOUT_SUCCESS',
+  LOGOUT_ERROR = '[Auth] LOGOUT_ERROR',
 
   CHECK_AUTH = '[Auth] CHECK_AUTH',
   CHECK_AUTH_START = '[Auth] CHECK_AUTH_START',
@@ -50,6 +52,16 @@ export class Logout implements Action {
   readonly type = ActionTypes.LOGOUT;
 }
 
+export class LogoutSuccess implements Action {
+  readonly type = ActionTypes.LOGOUT_SUCCESS;
+}
+
+export class LogoutError implements Action {
+  readonly type = ActionTypes.LOGOUT_ERROR;
+
+  constructor(public payload: any) { }
+}
+
 export class CheckAuth implements Action {
   readonly type = ActionTypes.CHECK_AUTH;
 }
@@ -77,6 +89,8 @@ export type Actions =
   | LoginUserError
   | RegisterUser
   | Logout
+  | LogoutSuccess
+  | LogoutError
   | CheckAuth
   | CheckAuthStart
   | CheckAuthSuccess

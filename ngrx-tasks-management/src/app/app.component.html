@@ -1,9 +1,15 @@
-<mat-toolbar>
+<mat-toolbar class="app-toolbar">
     <mat-toolbar-row>
         <span>Tasks management</span>
         <span class="app-spacer"></span>
 
-        <button mat-raised-button routerLink="/login">Login</button>
+        <div *ngIf="user$ | async as user; else loginButton">
+            <span class="mat-body-1 app-actions-btn">Hi {{user.username}}</span>
+            <button mat-raised-button (click)="logout()">Logout</button>
+        </div>
+        <ng-template #loginButton>
+            <button mat-raised-button routerLink="/login">Login</button>
+        </ng-template>
 
     </mat-toolbar-row>
 </mat-toolbar>

@@ -48,4 +48,8 @@ export class AuthService {
     }
     return !this.jwtHelperService.isTokenExpired(token);
   }
+
+  logout() {
+    this.removeToken();
+  }
 }

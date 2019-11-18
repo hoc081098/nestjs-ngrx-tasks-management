@@ -41,6 +41,15 @@ export const reducer = (state: AuthState = initialState, action: Actions): AuthS
       };
     case ActionTypes.LOGOUT:
       return state;
+    case ActionTypes.LOGOUT_ERROR:
+      return state;
+    case ActionTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        user: null
+      };
     case ActionTypes.CHECK_AUTH:
       return state;
     case ActionTypes.CHECK_AUTH_START:

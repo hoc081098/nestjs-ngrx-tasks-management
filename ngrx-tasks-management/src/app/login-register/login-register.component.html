@@ -1,2 +1,61 @@
-<p>login-register works!</p>
-<button mat-raised-button (click)="onLogin()">Login</button>
+<div fxLayout="row" fxLayoutAlign="center center" class="login-wrapper">
+    <mat-card class="login-register-card">
+        <mat-card-header>
+            <mat-card-title>
+                {{ isLoginMode ? 'LOGIN' : 'REGISTER' }}
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form (ngSubmit)="submit()">
+                <mat-form-field>
+                    <input
+                            type="text"
+                            matInput
+                            required
+                            placeholder="Enter username"
+                            [formControl]="usernameControl"
+                    />
+                    <mat-error *ngIf="usernameControl.invalid">{{
+                        getUsernameErrorMessage()
+                        }}</mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <input
+                            [type]="hidePassword ? 'password' : 'text'"
+                            matInput
+                            required
+                            placeholder="Enter your password"
+                            [formControl]="passwordControl"
+                    />
+                    <button
+                            mat-icon-button
+                            matSuffix
+                            (click)="hidePassword = !hidePassword"
+                            [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hidePassword"
+                    >
+                        <mat-icon>
+                            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+                        </mat-icon>
+                    </button>
+                    <mat-error *ngIf="passwordControl.invalid">{{
+                        getPasswordErrorMessage()
+                        }}</mat-error>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <button
+                mat-stroked-button
+                color="primary"
+                (click)="submit()">
+            {{ isLoginMode ? 'Login' : 'Register' }}
+        </button>
+        <button
+                mat-stroked-button
+                color="accent"
+                (click)="isLoginMode = !isLoginMode">
+            Switch to {{ isLoginMode ? 'register' : 'login' }}
+        </button>
+    </mat-card>
+</div>

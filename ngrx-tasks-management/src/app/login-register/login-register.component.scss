@@ -1,0 +1,38 @@
+.login-wrapper {
+  height: 100%;
+  background: #121212;
+}
+
+.login-wrapper .login-register-card {
+  padding: 20px;
+  max-width: 80%;
+  background: #303030;
+}
+
+.login-wrapper .mat-stroked-button {
+  border: 1px solid currentColor;
+  height: 54px;
+  background: #241e20;
+}
+
+.login-wrapper mat-card-header {
+  text-align: center;
+  width: 100%;
+  display: block;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.login-wrapper .mat-card-title {
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  margin: 0;
+}
+
+
+.login-wrapper mat-form-field, button {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
