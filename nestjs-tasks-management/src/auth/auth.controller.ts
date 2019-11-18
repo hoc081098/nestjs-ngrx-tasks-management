@@ -1,12 +1,16 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, UseGuards } from '@nestjs/common';
 import { AuthCredentialDto } from './dto/auth-credential.dto';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  private logger = new Logger('AuthController');
+
+  constructor(private readonly authService: AuthService) {
+  }
 
   @Post('/sign_up')
   signUp(@Body() authCredentialDto: AuthCredentialDto) {
@@ -20,8 +24,9 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard())
-  @Post('/test')
-  test(@GetUser() user) {
-    console.log(user);
+  @Get()
+  checkAuth(@GetUser() user: User) {
+    this.logger.debug(`checkAuth: user=${JSON.stringify(user)}`);
+    return { username: user.username };
   }
 }

@@ -9,15 +9,16 @@ export class AuthService {
   private readonly logger = new Logger('AuthService');
 
   constructor(
-      private readonly userRepository: UserRepository,
-      private readonly jwtService: JwtService,
-  ) {}
+    private readonly userRepository: UserRepository,
+    private readonly jwtService: JwtService,
+  ) {
+  }
 
   signUp(authCredentialDto: AuthCredentialDto): Promise<void> {
     return this.userRepository.signUp(authCredentialDto);
   }
 
-  async signIn(authCredentialDto: AuthCredentialDto): Promise<{ accessToken: string }> {
+  async signIn(authCredentialDto: AuthCredentialDto): Promise<{ accessToken: string; username: string }> {
     const result = await this.userRepository.validateUser(authCredentialDto);
     if (result === 'NOT_EXISTS') {
       throw new UnauthorizedException('Not found user');
@@ -31,6 +32,6 @@ export class AuthService {
     const accessToken = await this.jwtService.sign(payload);
 
     this.logger.debug(`Generate JWT token with payload=${JSON.stringify(payload)}`);
-    return { accessToken };
+    return { accessToken, username };
   }
 }
