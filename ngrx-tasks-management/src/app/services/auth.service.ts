@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {AuthDto, AuthType} from '../model/auth';
-import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {User} from '../model/user';
-import {tap} from 'rxjs/operators';
-import {JwtHelperService} from '@auth0/angular-jwt';
+import { Injectable } from '@angular/core';
+import { AuthDto, AuthType } from '../model/auth';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from '../model/user';
+import { tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,6 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
   ) {
-    this.userSubject.subscribe(user => console.log({user}));
   }
 
   private static _getUser(): User | null {
@@ -40,9 +39,9 @@ export class AuthService {
       .pipe(
         tap(body => {
           if (authType === 'sign_in') {
-            localStorage.setItem(AuthService.USER_KEY, JSON.stringify(body));
-            console.log('Get', localStorage.getItem(AuthService.USER_KEY));
-            this.userSubject.next(body);
+            const user = body as User;
+            localStorage.setItem(AuthService.USER_KEY, JSON.stringify(user));
+            this.userSubject.next(user);
           }
         }),
       );
@@ -54,12 +53,11 @@ export class AuthService {
 
   getToken(): string {
     const user = AuthService._getUser();
-    return user ? user.token : null;
+    return user ? user.accessToken : null;
   }
 
   isAuthenticated(): boolean {
     const token = this.getToken();
-    console.log('');
     if (!token) {
       return false;
     }
