@@ -5,9 +5,12 @@ import {AppModule} from './app.module';
 
 async function bootstrap() {
   const serverConfig = config.get('server');
+
   const logger = new Logger('bootstrap');
+  logger.log(`NODE_ENV: '${process.env.NODE_ENV}'`);
 
   const app = await NestFactory.create(AppModule);
+
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
   }
@@ -21,7 +24,6 @@ async function bootstrap() {
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port);
 
-  logger.log(`NODE_ENV: ${process.env.NODE_ENV}`);
   logger.log(`Application is running at port ${port}...`);
 }
 

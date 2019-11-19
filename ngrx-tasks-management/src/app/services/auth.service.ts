@@ -19,6 +19,7 @@ export class AuthService {
   constructor(
     private httpClient: HttpClient,
   ) {
+    this.userSubject.subscribe(user => console.log({user}));
   }
 
   private static _getUser(): User | null {
@@ -40,6 +41,7 @@ export class AuthService {
         tap(body => {
           if (authType === 'sign_in') {
             localStorage.setItem(AuthService.USER_KEY, JSON.stringify(body));
+            console.log('Get', localStorage.getItem(AuthService.USER_KEY));
             this.userSubject.next(body);
           }
         }),
@@ -57,6 +59,7 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = this.getToken();
+    console.log('');
     if (!token) {
       return false;
     }
