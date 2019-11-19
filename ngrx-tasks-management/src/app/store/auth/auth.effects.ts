@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {AuthService} from '../../services/auth.service';
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { AuthService } from '../../services/auth.service';
 import {
   ActionTypes,
   CheckAuthSuccess,
@@ -9,13 +9,21 @@ import {
   LoginUser,
   LoginUserSuccess,
   LoginUserStart,
-  LoginUserError, LogoutSuccess, LogoutError, AuthStateChanged
+  LoginUserError,
+  LogoutSuccess,
+  LogoutError,
+  AuthStateChanged,
+  RegisterUser,
+  RegisterUserStart,
+  RegisterUserSuccess,
+  RegisterUserError
 } from './auth.actions';
-import {catchError, exhaustMap, map, startWith, switchMap, tap} from 'rxjs/operators';
-import {defer, of} from 'rxjs';
-import {User} from '../../model/user';
-import {Router} from '@angular/router';
-import {MatSnackBar} from '@angular/material';
+import { catchError, exhaustMap, map, startWith, switchMap, tap } from 'rxjs/operators';
+import { defer, of } from 'rxjs';
+import { User } from '../../model/user';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+import { getErrorMessage } from '../../shared/util';
 
 @Injectable()
 export class AuthEffects {
@@ -66,17 +74,17 @@ export class AuthEffects {
   loginSuccessEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGIN_USER_SUCCESS),
-      tap(() => this.snackBar.open('Login success', undefined, {duration: 2000})),
+      tap(() => this.snackBar.open('Login success', undefined, { duration: 2000 })),
       tap(() => this.router.navigate(['/tasks'])),
     );
-  }, {dispatch: false});
+  }, { dispatch: false });
 
   loginErrorEffect = createEffect(() => {
     return this.actions$.pipe(
-      ofType(ActionTypes.LOGIN_USER_ERROR),
-      tap(() => this.snackBar.open('Login error', undefined, {duration: 2000})),
+      ofType<LoginUserError>(ActionTypes.LOGIN_USER_ERROR),
+      tap((action) => this.snackBar.open('Login error: ' + getErrorMessage(action.payload), undefined, { duration: 2000 })),
     );
-  }, {dispatch: false});
+  }, { dispatch: false });
 
   /**
    * LOGOUT
@@ -97,17 +105,17 @@ export class AuthEffects {
   logoutSuccessEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGOUT_SUCCESS),
-      tap(() => this.snackBar.open('Logout success', undefined, {duration: 2000})),
+      tap(() => this.snackBar.open('Logout success', undefined, { duration: 2000 })),
       tap(() => this.router.navigate(['/login'])),
     );
-  }, {dispatch: false});
+  }, { dispatch: false });
 
   logoutErrorEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGOUT_ERROR),
-      tap(() => this.snackBar.open('Logout error', undefined, {duration: 2000})),
+      tap(() => this.snackBar.open('Logout error', undefined, { duration: 2000 })),
     );
-  }, {dispatch: false});
+  }, { dispatch: false });
 
   /**
    * LISTEN_AUTH_STATE
@@ -122,4 +130,39 @@ export class AuthEffects {
       ),
     );
   });
+
+  /**
+   * REGISTER_USER
+   */
+  registerUserEffect = createEffect(() => {
+    return this.actions$.pipe(
+      ofType<RegisterUser>(ActionTypes.REGISTER_USER),
+      map(action => action.payload),
+      exhaustMap(authDto => {
+        return this
+          .authService
+          .auth(authDto, 'sign_up')
+          .pipe(
+            map(() => new RegisterUserSuccess()),
+            startWith(new RegisterUserStart()),
+            catchError(error => of(new RegisterUserError(error))),
+          );
+      }),
+    );
+  });
+
+  registerUserSuccessEffect = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ActionTypes.REGISTER_USER_SUCCESS),
+      tap(() => this.snackBar.open('Register user successfully', undefined, { duration: 2000 })),
+    );
+  }, { dispatch: false });
+
+  registerUserErrorEffect = createEffect(() => {
+    return this.actions$.pipe(
+      ofType<RegisterUserError>(ActionTypes.REGISTER_USER_ERROR),
+      map(action => action.payload),
+      tap(error => this.snackBar.open('Register user error: ' + getErrorMessage(error), undefined, { duration: 2000 })),
+    );
+  }, { dispatch: false });
 }

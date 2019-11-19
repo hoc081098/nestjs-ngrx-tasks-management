@@ -1,6 +1,6 @@
-import {Action} from '@ngrx/store';
-import {AuthDto} from '../../model/auth';
-import {User} from '../../model/user';
+import { Action } from '@ngrx/store';
+import { AuthDto } from '../../model/auth';
+import { User } from '../../model/user';
 
 export enum ActionTypes {
   LISTEN_AUTH_STATE = '[Auth] LISTEN_AUTH_STATE',
@@ -12,6 +12,9 @@ export enum ActionTypes {
   LOGIN_USER_ERROR = '[Auth] LOGIN_USER_ERROR',
 
   REGISTER_USER = '[Auth] REGISTER_USER',
+  REGISTER_USER_START = '[Auth] REGISTER_USER_START',
+  REGISTER_USER_SUCCESS = '[Auth] REGISTER_USER_SUCCESS',
+  REGISTER_USER_ERROR = '[Auth] REGISTER_USER_ERROR',
 
   LOGOUT = '[Auth] LOGOUT',
   LOGOUT_SUCCESS = '[Auth] LOGOUT_SUCCESS',
@@ -66,6 +69,21 @@ export class RegisterUser implements Action {
   }
 }
 
+export class RegisterUserStart implements Action {
+  readonly type = ActionTypes.REGISTER_USER_START;
+}
+
+export class RegisterUserSuccess implements Action {
+  readonly type = ActionTypes.REGISTER_USER_SUCCESS;
+}
+
+export class RegisterUserError implements Action {
+  readonly type = ActionTypes.REGISTER_USER_ERROR;
+
+  constructor(public readonly payload: any) {
+  }
+}
+
 export class Logout implements Action {
   readonly type = ActionTypes.LOGOUT;
 }
@@ -111,6 +129,9 @@ export type Actions =
   | LoginUserSuccess
   | LoginUserError
   | RegisterUser
+  | RegisterUserStart
+  | RegisterUserSuccess
+  | RegisterUserError
   | Logout
   | LogoutSuccess
   | LogoutError

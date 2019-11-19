@@ -12,8 +12,6 @@ export class AuthInterceptor implements HttpInterceptor {
     const authService = this.injector.get(AuthService);
     if (authService.isAuthenticated()) {
       const token = authService.getToken();
-      console.log('[AuthInterceptor] accessToken=', token);
-
       if (token) {
         const headers = new HttpHeaders({
           Authorization: `Bearer ${token}`,

@@ -33,7 +33,7 @@ export class AuthService {
     }
   }
 
-  auth(authDto: AuthDto, authType: AuthType) {
+  auth(authDto: AuthDto, authType: AuthType): Observable<any> {
     return this.httpClient
       .post<any>(AuthService.BASE_URL + authType, authDto)
       .pipe(

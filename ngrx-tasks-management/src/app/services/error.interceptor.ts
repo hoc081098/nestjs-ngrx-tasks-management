@@ -20,8 +20,6 @@ export class ErrorInterceptor implements HttpInterceptor {
   }
 
   private async handleError(error: any): Promise<HttpEvent<any>> {
-    console.log('[ErrorInterceptor] error: ', error);
-
     if (error instanceof HttpErrorResponse) {
       console.log('[ErrorInterceptor] status=', error.status, ', message=', error.message);
 
