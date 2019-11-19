@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AuthService } from '../../services/auth.service';
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {AuthService} from '../../services/auth.service';
 import {
   ActionTypes,
   CheckAuthSuccess,
@@ -9,13 +9,13 @@ import {
   LoginUser,
   LoginUserSuccess,
   LoginUserStart,
-  LoginUserError, LogoutSuccess, LogoutError
+  LoginUserError, LogoutSuccess, LogoutError, AuthStateChanged
 } from './auth.actions';
-import { catchError, exhaustMap, map, startWith, switchMap, tap } from 'rxjs/operators';
-import { defer, of } from 'rxjs';
-import { User } from '../../model/user';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import {catchError, exhaustMap, map, startWith, switchMap, tap} from 'rxjs/operators';
+import {defer, of} from 'rxjs';
+import {User} from '../../model/user';
+import {Router} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
 
 @Injectable()
 export class AuthEffects {
@@ -66,17 +66,17 @@ export class AuthEffects {
   loginSuccessEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGIN_USER_SUCCESS),
-      tap(() => this.snackBar.open('Login success', undefined, { duration: 2000 })),
+      tap(() => this.snackBar.open('Login success', undefined, {duration: 2000})),
       tap(() => this.router.navigate(['/tasks'])),
     );
-  }, { dispatch: false });
+  }, {dispatch: false});
 
   loginErrorEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGIN_USER_ERROR),
-      tap(() => this.snackBar.open('Login error', undefined, { duration: 2000 })),
+      tap(() => this.snackBar.open('Login error', undefined, {duration: 2000})),
     );
-  }, { dispatch: false });
+  }, {dispatch: false});
 
   /**
    * LOGOUT
@@ -97,15 +97,29 @@ export class AuthEffects {
   logoutSuccessEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGOUT_SUCCESS),
-      tap(() => this.snackBar.open('Logout success', undefined, { duration: 2000 })),
+      tap(() => this.snackBar.open('Logout success', undefined, {duration: 2000})),
       tap(() => this.router.navigate(['/login'])),
     );
-  }, { dispatch: false });
+  }, {dispatch: false});
 
   logoutErrorEffect = createEffect(() => {
     return this.actions$.pipe(
       ofType(ActionTypes.LOGOUT_ERROR),
-      tap(() => this.snackBar.open('Logout error', undefined, { duration: 2000 })),
+      tap(() => this.snackBar.open('Logout error', undefined, {duration: 2000})),
     );
-  }, { dispatch: false });
+  }, {dispatch: false});
+
+  /**
+   * LISTEN_AUTH_STATE
+   */
+  listenAuthStateEffect = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(ActionTypes.LISTEN_AUTH_STATE),
+      exhaustMap(() =>
+        this.authService
+          .user$
+          .pipe(map(user => new AuthStateChanged(user))),
+      ),
+    );
+  });
 }

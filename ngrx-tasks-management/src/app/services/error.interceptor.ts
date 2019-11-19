@@ -26,7 +26,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       console.log('[ErrorInterceptor] status=', error.status, ', message=', error.message);
 
       if (error.status === 401) {
-        this.injector.get(AuthService).removeToken();
+        this.injector.get(AuthService).logout();
         await this.router.navigate(['/login']);
       }
     }

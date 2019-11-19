@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/store.module';
-import { CheckAuth, Logout, selectAuthUser } from './store/auth';
+import {CheckAuth, ListenAuthState, Logout, selectAuthUser} from './store/auth';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.store.dispatch(new ListenAuthState());
     this.store.dispatch(new CheckAuth());
   }
 
