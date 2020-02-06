@@ -3,12 +3,18 @@ import { AuthDto } from '../../model/auth';
 import { User } from '../../model/user';
 
 export enum ActionTypes {
+  LISTEN_AUTH_STATE = '[Auth] LISTEN_AUTH_STATE',
+  AUTH_STATE_CHANGED = '[Auth] AUTH_STATE_CHANGED',
+
   LOGIN_USER = '[Auth] LOGIN_USER',
   LOGIN_USER_START = '[Auth] LOGIN_USER_START',
   LOGIN_USER_SUCCESS = '[Auth] LOGIN_USER_SUCCESS',
   LOGIN_USER_ERROR = '[Auth] LOGIN_USER_ERROR',
 
   REGISTER_USER = '[Auth] REGISTER_USER',
+  REGISTER_USER_START = '[Auth] REGISTER_USER_START',
+  REGISTER_USER_SUCCESS = '[Auth] REGISTER_USER_SUCCESS',
+  REGISTER_USER_ERROR = '[Auth] REGISTER_USER_ERROR',
 
   LOGOUT = '[Auth] LOGOUT',
   LOGOUT_SUCCESS = '[Auth] LOGOUT_SUCCESS',
@@ -20,10 +26,22 @@ export enum ActionTypes {
   CHECK_AUTH_ERROR = '[Auth] CHECK_AUTH_ERROR',
 }
 
+export class ListenAuthState implements Action {
+  readonly type = ActionTypes.LISTEN_AUTH_STATE;
+}
+
+export class AuthStateChanged implements Action {
+  readonly type = ActionTypes.AUTH_STATE_CHANGED;
+
+  constructor(public payload: User) {
+  }
+}
+
 export class LoginUser implements Action {
   readonly type = ActionTypes.LOGIN_USER;
 
-  constructor(public readonly payload: AuthDto) {}
+  constructor(public readonly payload: AuthDto) {
+  }
 }
 
 export class LoginUserStart implements Action {
@@ -33,19 +51,37 @@ export class LoginUserStart implements Action {
 export class LoginUserSuccess implements Action {
   readonly type = ActionTypes.LOGIN_USER_SUCCESS;
 
-  constructor(public payload: User) {}
+  constructor(public payload: User) {
+  }
 }
 
 export class LoginUserError implements Action {
   readonly type = ActionTypes.LOGIN_USER_ERROR;
 
-  constructor(public payload: any) {}
+  constructor(public payload: any) {
+  }
 }
 
 export class RegisterUser implements Action {
   readonly type = ActionTypes.REGISTER_USER;
 
-  constructor(public readonly payload: AuthDto) {}
+  constructor(public readonly payload: AuthDto) {
+  }
+}
+
+export class RegisterUserStart implements Action {
+  readonly type = ActionTypes.REGISTER_USER_START;
+}
+
+export class RegisterUserSuccess implements Action {
+  readonly type = ActionTypes.REGISTER_USER_SUCCESS;
+}
+
+export class RegisterUserError implements Action {
+  readonly type = ActionTypes.REGISTER_USER_ERROR;
+
+  constructor(public readonly payload: any) {
+  }
 }
 
 export class Logout implements Action {
@@ -59,7 +95,8 @@ export class LogoutSuccess implements Action {
 export class LogoutError implements Action {
   readonly type = ActionTypes.LOGOUT_ERROR;
 
-  constructor(public payload: any) { }
+  constructor(public payload: any) {
+  }
 }
 
 export class CheckAuth implements Action {
@@ -73,25 +110,32 @@ export class CheckAuthStart implements Action {
 export class CheckAuthSuccess implements Action {
   readonly type = ActionTypes.CHECK_AUTH_SUCCESS;
 
-  constructor(public readonly payload: User | null) {}
+  constructor(public readonly payload: User | null) {
+  }
 }
 
 export class CheckAuthError implements Action {
   readonly type = ActionTypes.CHECK_AUTH_ERROR;
 
-  constructor(public readonly payload: any) {}
+  constructor(public readonly payload: any) {
+  }
 }
 
 export type Actions =
-  LoginUser
-  | LoginUserStart
-  | LoginUserSuccess
-  | LoginUserError
-  | RegisterUser
-  | Logout
-  | LogoutSuccess
-  | LogoutError
-  | CheckAuth
-  | CheckAuthStart
-  | CheckAuthSuccess
-  | CheckAuthError;
+    ListenAuthState
+    | AuthStateChanged
+    | LoginUser
+    | LoginUserStart
+    | LoginUserSuccess
+    | LoginUserError
+    | RegisterUser
+    | RegisterUserStart
+    | RegisterUserSuccess
+    | RegisterUserError
+    | Logout
+    | LogoutSuccess
+    | LogoutError
+    | CheckAuth
+    | CheckAuthStart
+    | CheckAuthSuccess
+    | CheckAuthError;

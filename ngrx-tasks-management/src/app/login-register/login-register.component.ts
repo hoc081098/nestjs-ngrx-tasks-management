@@ -4,7 +4,6 @@ import { AppState } from '../store/store.module';
 import { LoginUser, RegisterUser } from '../store/auth';
 import { FormControl, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { isLoop } from 'tslint';
 import { AuthDto } from '../model/auth';
 
 @Component({
@@ -28,8 +27,8 @@ export class LoginRegisterComponent implements OnInit {
   ]);
 
   constructor(
-    private store: Store<AppState>,
-    private snackBar: MatSnackBar,
+      private store: Store<AppState>,
+      private snackBar: MatSnackBar,
   ) {
   }
 

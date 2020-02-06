@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthDto, AuthType } from '../model/auth';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../model/user';
 import { tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -11,22 +11,44 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 })
 export class AuthService {
   private static readonly BASE_URL = 'http://localhost:3000/auth/';
+  private static readonly USER_KEY = 'user';
+
   private readonly jwtHelperService = new JwtHelperService();
+  private readonly userSubject = new BehaviorSubject<User>(AuthService._getUser());
 
   constructor(
-    private httpClient: HttpClient,
-  ) { }
+      private httpClient: HttpClient,
+  ) {
+  }
 
-  auth(authDto: AuthDto, authType: AuthType) {
+  get user$() {
+    return this.userSubject.asObservable();
+  }
+
+  private static _getUser(): User | null {
+    const user = localStorage.getItem(AuthService.USER_KEY);
+    if (!user) {
+      return null;
+    }
+    try {
+      return JSON.parse(user);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  auth(authDto: AuthDto, authType: AuthType): Observable<any> {
     return this.httpClient
-      .post<any>(AuthService.BASE_URL + authType, authDto)
-      .pipe(
-        tap(body => {
-          if (authType === 'sign_in') {
-            localStorage.setItem('token', body.accessToken);
-          }
-        }),
-      );
+        .post<any>(AuthService.BASE_URL + authType, authDto)
+        .pipe(
+            tap(body => {
+              if (authType === 'sign_in') {
+                const user = body as User;
+                localStorage.setItem(AuthService.USER_KEY, JSON.stringify(user));
+                this.userSubject.next(user);
+              }
+            }),
+        );
   }
 
   checkAuth(): Observable<User> {
@@ -34,15 +56,12 @@ export class AuthService {
   }
 
   getToken(): string {
-    return localStorage.getItem('token');
-  }
-
-  removeToken() {
-    return localStorage.removeItem('token');
+    const user = AuthService._getUser();
+    return user ? user.accessToken : null;
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('token');
+    const token = this.getToken();
     if (!token) {
       return false;
     }
@@ -50,6 +69,7 @@ export class AuthService {
   }
 
   logout() {
-    this.removeToken();
+    localStorage.removeItem(AuthService.USER_KEY);
+    this.userSubject.next(null);
   }
 }

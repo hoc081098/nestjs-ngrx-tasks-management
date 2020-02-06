@@ -15,6 +15,13 @@ const initialState: AuthState = {
 
 export const reducer = (state: AuthState = initialState, action: Actions): AuthState => {
   switch (action.type) {
+    case ActionTypes.LISTEN_AUTH_STATE:
+      return state;
+    case ActionTypes.AUTH_STATE_CHANGED:
+      return {
+        ...state,
+        user: action.payload,
+      };
     case ActionTypes.REGISTER_USER:
       return state;
     case ActionTypes.LOGIN_USER:

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActionReducerMap, MetaReducer, StoreModule as NgRxStoreModule } from '@ngrx/store';
-import { AuthState, reducer as authReducer, AuthEffects } from './auth';
+import { AuthEffects, AuthState, reducer as authReducer } from './auth';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
