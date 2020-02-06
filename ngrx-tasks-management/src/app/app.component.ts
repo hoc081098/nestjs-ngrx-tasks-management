@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from './store/store.module';
-import {CheckAuth, ListenAuthState, Logout, selectAuthUser} from './store/auth';
+import { CheckAuth, ListenAuthState, Logout, selectAuthUser } from './store/auth';
 
 @Component({
   selector: 'app-root',

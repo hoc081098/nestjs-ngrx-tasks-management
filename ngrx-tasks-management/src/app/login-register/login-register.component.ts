@@ -27,8 +27,8 @@ export class LoginRegisterComponent implements OnInit {
   ]);
 
   constructor(
-    private store: Store<AppState>,
-    private snackBar: MatSnackBar,
+      private store: Store<AppState>,
+      private snackBar: MatSnackBar,
   ) {
   }
 

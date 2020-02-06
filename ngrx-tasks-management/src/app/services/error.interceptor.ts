@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
@@ -9,13 +9,13 @@ import { fromPromise } from 'rxjs/internal-compatibility';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
-    private injector: Injector,
-    private router: Router
+      private injector: Injector,
+      private router: Router
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req.clone()).pipe(
-      catchError((error) => fromPromise(this.handleError(error))),
+        catchError((error) => fromPromise(this.handleError(error))),
     );
   }
 

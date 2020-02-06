@@ -17,8 +17,12 @@ export class AuthService {
   private readonly userSubject = new BehaviorSubject<User>(AuthService._getUser());
 
   constructor(
-    private httpClient: HttpClient,
+      private httpClient: HttpClient,
   ) {
+  }
+
+  get user$() {
+    return this.userSubject.asObservable();
   }
 
   private static _getUser(): User | null {
@@ -35,16 +39,16 @@ export class AuthService {
 
   auth(authDto: AuthDto, authType: AuthType): Observable<any> {
     return this.httpClient
-      .post<any>(AuthService.BASE_URL + authType, authDto)
-      .pipe(
-        tap(body => {
-          if (authType === 'sign_in') {
-            const user = body as User;
-            localStorage.setItem(AuthService.USER_KEY, JSON.stringify(user));
-            this.userSubject.next(user);
-          }
-        }),
-      );
+        .post<any>(AuthService.BASE_URL + authType, authDto)
+        .pipe(
+            tap(body => {
+              if (authType === 'sign_in') {
+                const user = body as User;
+                localStorage.setItem(AuthService.USER_KEY, JSON.stringify(user));
+                this.userSubject.next(user);
+              }
+            }),
+        );
   }
 
   checkAuth(): Observable<User> {
@@ -67,9 +71,5 @@ export class AuthService {
   logout() {
     localStorage.removeItem(AuthService.USER_KEY);
     this.userSubject.next(null);
-  }
-
-  get user$() {
-    return this.userSubject.asObservable();
   }
 }

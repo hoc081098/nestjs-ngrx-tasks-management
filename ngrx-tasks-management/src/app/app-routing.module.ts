@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { TasksComponent } from './tasks/tasks.component';
 import { LoginRegisterComponent } from './login-register/login-register.component';
 import { AuthGuard } from './auth.guard';

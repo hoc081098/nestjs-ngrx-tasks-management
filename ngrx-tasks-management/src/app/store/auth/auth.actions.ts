@@ -122,20 +122,20 @@ export class CheckAuthError implements Action {
 }
 
 export type Actions =
-  ListenAuthState
-  | AuthStateChanged
-  | LoginUser
-  | LoginUserStart
-  | LoginUserSuccess
-  | LoginUserError
-  | RegisterUser
-  | RegisterUserStart
-  | RegisterUserSuccess
-  | RegisterUserError
-  | Logout
-  | LogoutSuccess
-  | LogoutError
-  | CheckAuth
-  | CheckAuthStart
-  | CheckAuthSuccess
-  | CheckAuthError;
+    ListenAuthState
+    | AuthStateChanged
+    | LoginUser
+    | LoginUserStart
+    | LoginUserSuccess
+    | LoginUserError
+    | RegisterUser
+    | RegisterUserStart
+    | RegisterUserSuccess
+    | RegisterUserError
+    | Logout
+    | LogoutSuccess
+    | LogoutError
+    | CheckAuth
+    | CheckAuthStart
+    | CheckAuthSuccess
+    | CheckAuthError;
